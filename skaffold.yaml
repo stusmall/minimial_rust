@@ -1,0 +1,33 @@
+apiVersion: skaffold/v4beta1
+kind: Config
+metadata:
+  name: minikube-start
+build:
+  artifacts:
+  - image: frontend
+    context: .
+    docker:
+      dockerfile: frontend/Dockerfile
+  - image: server
+    context: .
+    docker:
+      dockerfile: server/Dockerfile
+  local:
+    useBuildkit: true
+
+deploy:
+  helm:
+    releases:
+      - name: postgres
+        repo: https://charts.bitnami.com/bitnami
+        remoteChart: postgresql
+      - name: frontend
+        chartPath: charts/frontend
+        setValueTemplates:
+          image.repository: "{{.IMAGE_REPO_frontend}}"
+          image.tag: "{{.IMAGE_TAG_frontend}}"
+      - name: server
+        chartPath: charts/server
+        setValueTemplates:
+          image.repository: "{{.IMAGE_REPO_server}}"
+          image.tag: "{{.IMAGE_TAG_server}}"

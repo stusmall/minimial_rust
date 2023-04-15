@@ -1,0 +1,7 @@
+[package]
+name = "migration"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+refinery = { version = "0.8", features = ["tokio-postgres"]}
