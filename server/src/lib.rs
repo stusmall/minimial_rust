@@ -14,6 +14,9 @@ use tracing_subscriber::util::SubscriberInitExt;
 use crate::handlers::healthz::health_check;
 use tower_http::trace::TraceLayer;
 
+
+
+
 pub async fn run() -> Result<(), Box<dyn Error>> {
     tracing_subscriber::registry()
         .with(

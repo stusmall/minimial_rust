@@ -5,16 +5,15 @@ metadata:
 build:
   artifacts:
   - image: frontend
-    context: .
+    context: frontend
     docker:
       dockerfile: frontend/Dockerfile
   - image: server
-    context: .
+    context: server
     docker:
       dockerfile: server/Dockerfile
   local:
     useBuildkit: true
-
 deploy:
   helm:
     releases:
