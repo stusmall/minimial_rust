@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  {{ if .Values.appendTime }}
+  # The unix epoc is tacked on the end to allow us to iterate while we work https://github.com/GoogleContainerTools/skaffold/issues/5513
+  name: {{ include "migration.fullname" . }}-{{ now | unixEpoch }}
+  {{else}}
+  name: {{ include "migration.fullname" . }}
+  {{ end }}
+  labels:
+    {{- include "migration.labels" . | nindent 4 }}
+spec:
+  template:
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          env:
+            - name: "HOSTNAME"
+              value: {{ .Values.env.hostname | default "postgres-postgresql" | quote }}
+            - name: "USERNAME"
+              value: {{ .Values.env.username | quote }}
+            - name: "PASSWORD"
+              value: {{ .Values.env.password | quote }}
+            - name: "DATABASE"
+              value: {{ .Values.env.database | quote }}
+      restartPolicy: Never
+  backoffLimit: 4

@@ -8,6 +8,10 @@ build:
     context: frontend
     docker:
       dockerfile: frontend/Dockerfile
+  - image: migration
+    context: migration
+    docker:
+      dockerfile: migration/Dockerfile
   - image: server
     context: server
     docker:
@@ -20,13 +24,33 @@ deploy:
       - name: postgres
         repo: https://charts.bitnami.com/bitnami
         remoteChart: postgresql
-      - name: frontend
-        chartPath: charts/frontend
+        wait: true
         setValueTemplates:
-          image.repository: "{{.IMAGE_REPO_frontend}}"
-          image.tag: "{{.IMAGE_TAG_frontend}}"
+          auth:
+            username: "user"
+            password: "password"
+            database: "db"
+      - name: migration
+        chartPath: charts/migration
+        setValueTemplates:
+          image.repository: "{{.IMAGE_REPO_migration}}"
+          image.tag: "{{.IMAGE_TAG_migration}}"
+          env:
+            username: "user"
+            password: "password"
+            database: "db"
+          appendTime: true
       - name: server
         chartPath: charts/server
         setValueTemplates:
           image.repository: "{{.IMAGE_REPO_server}}"
           image.tag: "{{.IMAGE_TAG_server}}"
+          env:
+            username: "user"
+            password: "password"
+            database: "db"
+      - name: frontend
+        chartPath: charts/frontend
+        setValueTemplates:
+          image.repository: "{{.IMAGE_REPO_frontend}}"
+          image.tag: "{{.IMAGE_TAG_frontend}}"

@@ -4,4 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-refinery = { version = "0.8", features = ["tokio-postgres"]}
+clap = { version="4.2.2", features = ["derive", "env"] }
+refinery = { version = "0.8", features = ["postgres"]}
+postgres = "0.19"
+
+
+[profile.release]
+lto = true
+codegen-units = 1
