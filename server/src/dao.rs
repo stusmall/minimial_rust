@@ -55,7 +55,7 @@ impl Dao for DaoImpl {
 #[cfg(test)]
 #[derive(Clone, Default)]
 pub struct DaoTest {
-    pub contents: std::sync::Arc<std::sync::Mutex<Vec<String>>>
+    pub contents: std::sync::Arc<std::sync::Mutex<Vec<String>>>,
 }
 
 #[cfg(test)]

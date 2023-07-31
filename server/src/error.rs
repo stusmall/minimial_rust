@@ -1,7 +1,7 @@
-use std::error::Error as StdError;
-use std::fmt::{Debug, Display, Formatter};
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
+use std::error::Error as StdError;
+use std::fmt::{Debug, Display, Formatter};
 
 use deadpool_postgres::tokio_postgres::Error as PostgresError;
 use deadpool_postgres::PoolError;
@@ -44,16 +44,17 @@ impl From<PostgresError> for Error {
 }
 #[derive(Serialize)]
 pub struct ErrorResponse {
-    cause: String
+    cause: String,
 }
 
 impl IntoResponse for Error {
     fn into_response(self) -> Response {
         match self {
             Error::PostgresError(_) | Error::PoolError(_) => {
-                let mut resp = axum::Json(ErrorResponse  {
-                    cause: String::from("Failure to run database query")
-                }).into_response();
+                let mut resp = axum::Json(ErrorResponse {
+                    cause: String::from("Failure to run database query"),
+                })
+                .into_response();
                 (*resp.status_mut()) = StatusCode::INTERNAL_SERVER_ERROR;
                 resp
             }
