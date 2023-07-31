@@ -1,6 +1,6 @@
 use axum::body::Empty;
 use axum::response::{IntoResponse, Response};
-use  tracing::instrument;
+use tracing::instrument;
 
 #[instrument(level = "debug")]
 pub async fn health_check() -> Response {

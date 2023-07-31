@@ -45,6 +45,15 @@ spec:
             httpGet:
               path: /healthz
               port: http
+          env:
+            - name: "HOSTNAME"
+              value: {{ .Values.env.hostname | default "postgres-postgresql" | quote }}
+            - name: "USERNAME"
+              value: {{ .Values.env.username | quote }}
+            - name: "PASSWORD"
+              value: {{ .Values.env.password | quote }}
+            - name: "DATABASE"
+              value: {{ .Values.env.database | quote }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

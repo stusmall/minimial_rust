@@ -24,3 +24,10 @@ create .dockerignore
 
 
 #TODO create a migration container.  This will be a single job that is run in skaffold before server starts.  this should be part of CI in production
+
+
+To run:
+
+minikube start
+minikube addons enable ingress
+skaffold dev
