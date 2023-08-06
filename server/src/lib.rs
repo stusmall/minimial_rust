@@ -14,6 +14,9 @@ use tower_http::trace::TraceLayer;
 use tracing::info_span;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
+use utoipa_swagger_ui::SwaggerUi;
+use utoipa::OpenApi;
+use crate::handlers::v1::ApiDoc;
 
 pub async fn run<DAO: Dao>(dao: DAO, port: u16) -> Result<(), Box<dyn Error>> {
     tracing_subscriber::registry()
@@ -24,6 +27,7 @@ pub async fn run<DAO: Dao>(dao: DAO, port: u16) -> Result<(), Box<dyn Error>> {
         .with(tracing_subscriber::fmt::layer())
         .init();
     let app = Router::new()
+        .merge(SwaggerUi::new("/swagger-ui").url("openapi.json", ApiDoc::openapi()))
         .route("/healthz", get(health_check))
         .nest("/api/v1", handlers::v1::build_router::<DAO>())
         .with_state(dao)

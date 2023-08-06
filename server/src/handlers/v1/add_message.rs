@@ -14,6 +14,8 @@ pub(super) struct AddMessageRequest {
 #[derive(Serialize, Deserialize, ToSchema)]
 pub(super) struct AddMessageResponse {}
 
+
+
 #[instrument(level = "debug", skip_all)]
 pub(super) async fn add_messages<DAO: Dao>(
     State(dao): State<DAO>,

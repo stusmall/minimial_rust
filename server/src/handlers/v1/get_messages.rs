@@ -11,6 +11,14 @@ pub(super) struct MessageResponse {
     pub messages: Vec<String>,
 }
 
+
+#[utoipa::path(
+    get,
+    path = "/api/v1/message",
+    responses(
+        (status = 200, description = "Get a list of all messages added", body = [MessageResponse])
+    )
+)]
 #[instrument(level = "debug", skip_all)]
 pub(super) async fn get_messages<DAO: Dao>(
     State(dao): State<DAO>,
