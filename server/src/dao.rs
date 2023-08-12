@@ -2,6 +2,7 @@ use crate::error::Error;
 use async_trait::async_trait;
 use deadpool_postgres::tokio_postgres::NoTls;
 use deadpool_postgres::{Config, GenericClient, Pool, Runtime};
+use tracing::instrument;
 
 #[derive(Clone)]
 pub struct DaoImpl {
@@ -33,6 +34,7 @@ pub trait Dao: 'static + Clone + Send + Sync {
 }
 #[async_trait]
 impl Dao for DaoImpl {
+    #[instrument(level = "debug", skip_all, err)]
     async fn get_items(&self) -> Result<Vec<String>, Error> {
         let client = self.connection_pool.get().await?;
         Ok(client
@@ -43,10 +45,11 @@ impl Dao for DaoImpl {
             .collect())
     }
 
+    #[instrument(level = "debug", skip_all, err)]
     async fn add_item(&self, message: &str) -> Result<(), Error> {
         let client = self.connection_pool.get().await?;
         client
-            .execute("INSERT INTO messages (message) VALUE ($1)", &[&message])
+            .execute("INSERT INTO messages (message) VALUES ($1)", &[&message])
             .await?;
         Ok(())
     }

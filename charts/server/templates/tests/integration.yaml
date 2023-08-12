@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "server.fullname" . }}-integration-test"
+  labels:
+    {{- include "server.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: integration-test
+      image: "{{ .Values.test.image.repository }}:{{ .Values.test.image.tag }}"
+      imagePullPolicy: {{ $.Values.test.image.pullPolicy }}
+      env:
+        - name: HOSTNAME
+          value:  "{{ include "server.fullname" . }}"
+  restartPolicy: Never

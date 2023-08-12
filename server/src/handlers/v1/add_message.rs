@@ -15,7 +15,6 @@ pub(super) struct AddMessageRequest {
 pub(super) struct AddMessageResponse {}
 
 
-
 #[instrument(level = "debug", skip_all)]
 pub(super) async fn add_messages<DAO: Dao>(
     State(dao): State<DAO>,

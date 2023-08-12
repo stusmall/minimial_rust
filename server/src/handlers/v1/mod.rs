@@ -64,5 +64,6 @@ mod test {
         let body: Value = serde_json::from_slice(&body).unwrap();
         let msgs = body.get("messages").unwrap().as_array().unwrap();
         assert_eq!(msgs, json!(["oh hai"]).as_array().unwrap());
+        assert_eq!(*dao.contents.lock().unwrap(), vec![String::from("oh hai")]);
     }
 }

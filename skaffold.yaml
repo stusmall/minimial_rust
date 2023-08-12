@@ -16,6 +16,10 @@ build:
     context: server
     docker:
       dockerfile: server/Dockerfile
+  - image: server-integration-test
+    context: server/integration-test
+    docker:
+      dockerfile: server/integration-test/Dockerfile
   local:
     useBuildkit: true
 deploy:
@@ -45,6 +49,8 @@ deploy:
         setValueTemplates:
           image.repository: "{{.IMAGE_REPO_server}}"
           image.tag: "{{.IMAGE_TAG_server}}"
+          test.image.repository: "{{.IMAGE_REPO_server_integration_test}}"
+          test.image.tag: "{{.IMAGE_TAG_server_integration_test}}"
           env:
             username: "user"
             password: "password"

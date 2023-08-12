@@ -1,6 +1,7 @@
 # syntax = docker/dockerfile:1.4
-FROM rust:1.68.2-alpine as build
-COPY . /app
+FROM rust:1.71.1-alpine as build
+COPY ["Cargo.toml", "Cargo.lock", "/app/"]
+COPY ["src", "/app/src"]
 WORKDIR /app/
 RUN apk add musl-dev
 RUN --mount=type=cache,target=/usr/local/cargo/registry  \
