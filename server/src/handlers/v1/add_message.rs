@@ -14,7 +14,15 @@ pub(super) struct AddMessageRequest {
 #[derive(Serialize, Deserialize, ToSchema)]
 pub(super) struct AddMessageResponse {}
 
-
+#[utoipa::path(
+    post,
+    path = "/api/v1/message",
+    request_body = AddMessageRequest,
+    responses(
+        (status = 200, description = "", body = [AddMessageResponse]),
+        (status = 500, description = "", body = [ErrorResponse])
+    )
+)]
 #[instrument(level = "debug", skip_all)]
 pub(super) async fn add_messages<DAO: Dao>(
     State(dao): State<DAO>,

@@ -11,7 +11,6 @@ pub(super) struct MessageResponse {
     pub messages: Vec<String>,
 }
 
-
 #[utoipa::path(
     get,
     path = "/api/v1/message",

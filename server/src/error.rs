@@ -1,3 +1,4 @@
+use axum::extract::rejection::JsonRejection;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use std::error::Error as StdError;
@@ -6,6 +7,7 @@ use std::fmt::{Debug, Display, Formatter};
 use deadpool_postgres::tokio_postgres::Error as PostgresError;
 use deadpool_postgres::PoolError;
 use serde::Serialize;
+use utoipa::ToSchema;
 
 #[derive(Debug)]
 pub enum Error {
@@ -42,7 +44,7 @@ impl From<PostgresError> for Error {
         Error::PostgresError(e)
     }
 }
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct ErrorResponse {
     cause: String,
 }

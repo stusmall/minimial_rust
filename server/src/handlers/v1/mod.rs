@@ -7,13 +7,15 @@ use utoipa::OpenApi;
 mod add_message;
 mod get_messages;
 
+use add_message::*;
 use get_messages::*;
-
+// TODO:  implement https://docs.rs/axum/latest/axum/extract/index.html#implementing-fromrequest for custom json error
+// or maybe https://github.com/tokio-rs/axum/issues/1116#issuecomment-1425467705
 
 #[derive(OpenApi)]
 #[openapi(
-    paths(get_messages),
-    components(schemas(MessageResponse)),
+    paths(add_messages, get_messages),
+    components(schemas(AddMessageRequest, AddMessageResponse, MessageResponse)),
     tags()
 )]
 pub struct ApiDoc;
@@ -23,6 +25,7 @@ pub fn build_router<DAO: Dao>() -> Router<DAO, Body> {
         .route("/message", get(get_messages::get_messages::<DAO>))
         .route("/message", post(add_message::add_messages::<DAO>))
 }
+
 #[cfg(test)]
 mod test {
     use super::*;
